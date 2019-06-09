@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Vehiculo">
+    <insert id="registrar" parameterType="pojos.Vehiculo">
+        INSERT INTO transito.dbo.vehiculo(marca, modelo, anio, color, nombreAseguradora, numPoliza, placa) 
+        VALUES(#{marca}, #{modelo}, #{anio}, #{color}, #{nombreAseguradora});
+    </insert>
+</mapper>
