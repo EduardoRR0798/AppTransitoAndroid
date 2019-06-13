@@ -3,8 +3,29 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Vehiculo">
-    <insert id="registrar" parameterType="pojos.Vehiculo">
-        INSERT INTO transito.dbo.vehiculo(marca, modelo, anio, color, nombreAseguradora, numPoliza, placa) 
-        VALUES(#{marca}, #{modelo}, #{anio}, #{color}, #{nombreAseguradora});
+    <update id="registrar" parameterType="modelo.pojos.Vehiculo" statementType="CALLABLE">
+        {CALL transito.dbo.pc_registrar_vehiculo(
+        #{marca, jdbcType=VARCHAR, mode=IN},
+        #{modelo, jdbcType=VARCHAR, mode=IN},
+        #{anio, jdbcType=VARCHAR, mode=IN},
+        #{color, jdbcType=VARCHAR, mode=IN},
+        #{nombreAseguradora, jdbcType=VARCHAR, mode=IN},
+        #{numPoliza, jdbcType=VARCHAR, mode=IN},
+        #{placa, jdbcType=VARCHAR, mode=IN},
+        #{idConductor, jdbcType=INTEGER, mode=IN},
+        #{propietario, jdbcType=CHAR, mode=IN},
+        #{id, jdbcType=INTEGER, mode=OUT})}
+    </update>
+    <select id="findByPlaca" parameterType="string" returnType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo where placa = #{placa};
+    </select>
+    <delete id="eliminarRelacion" parameterType="integer">
+        DELETE FROM transito.dbo.vehiculo_conductor WHERE idVehiculoConductor = #{idVehiculoConductor};
+    </delete>
+    <insert id="agregarALista" parameterType="map">
+        INSERT INTO transito.dbo.vehiculo_conductor(idConductor, idVehiculo, propietario) VALUES(#{idConductor}, #{idVehiculo}, #{propietario});
     </insert>
+    <select>
+        SELECT * FROM transito.dbo.vehiculo_conductor WHERE idConductor = #{idConductor};
+    </select>
 </mapper>

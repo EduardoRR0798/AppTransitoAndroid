@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED" >
                 <property name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-                <property name="url" value="jdbc:sqlserver://localhost:1433;instanceName=SQLEXPRESS;db=puntoventa"/>
+                <property name="url" value="jdbc:sqlserver://localhost:1433;instanceName=SQLEXPRESS;db=Transito"/>
                 <property name="username" value="sa"/>
                 <property name="password" value="ERRProblem"/>
                 <property name="poolMaximumActiveConnections" value="50"/>
@@ -20,9 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     </environments>
     
     <mappers>
-        <mapper resource="model/mappers/Mapper.xml"/>
-        <mapper resource="model/mappers/ClienteMapper.xml"/>
-        <mapper resource="model/mappers/VentaMapper.xml"/>
-        <mapper resource="model/mappers/VentaProducto.xml"/>
+        <mapper resource="modelo/mappers/Conductor.xml"/>
+        <mapper resource="modelo/mappers/Vehiculo.xml"/>
     </mappers>
 </configuration>

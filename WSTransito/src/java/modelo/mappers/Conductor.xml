@@ -3,9 +3,12 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Conductor">
-    <insert id="registrarse" parameterType="pojos.Conductor">
+    <insert id="registrarse" parameterType="modelo.pojos.Conductor">
         INSERT INTO transito.dbo.conductor(nombre, fechaNacimiento, numLicencia, telefono, contrasenia) 
         VALUES (#{nombre}, #{fechaNacimiento}, #{numLicencia}, #{telefono}, #{contrasenia});
     </insert>
+    <select id="findById" parameterType="integer" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE idConductor = #{idConductor};
+    </select>
 </mapper>
 

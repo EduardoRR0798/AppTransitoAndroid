@@ -1,8 +1,8 @@
 package modelo.dao;
 
 import modelo.MyBatisUtils;
+import modelo.pojos.Conductor;
 import org.apache.ibatis.session.SqlSession;
-import ws.Conductor;
 
 /**
  *
@@ -24,5 +24,21 @@ public class ConductorDAO {
             }
         }
         return insert;
+    }
+    
+    public static Conductor registrarConductor(Integer id) {
+        SqlSession conn = null;
+        Conductor c = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            c = (Conductor) conn.selectList("Conductor.findById", id).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return c;
     }
 }

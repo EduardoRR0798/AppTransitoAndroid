@@ -13,7 +13,52 @@ public class Vehiculo {
     private String nombreAseguradora;
     private String numPoliza;
     private String placa;
+    private String propietario;
+    private Integer idConductor;
+    private Integer id;
+    
+    /**
+     * @return the idVehiculo
+     */
+    public Integer getId() {
+        return id;
+    }
 
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    /**
+     * @return the idVehiculo
+     */
+    public String getPropietario() {
+        return propietario;
+    }
+
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
+    
+    /**
+     * @return the idVehiculo
+     */
+    public Integer getIdConductor() {
+        return idConductor;
+    }
+
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setIdConductor(Integer idConductor) {
+        this.idConductor = idConductor;
+    }
+    
     /**
      * @return the idVehiculo
      */
@@ -125,6 +170,4 @@ public class Vehiculo {
     public void setPlaca(String placa) {
         this.placa = placa;
     }
-    
-    
 }
