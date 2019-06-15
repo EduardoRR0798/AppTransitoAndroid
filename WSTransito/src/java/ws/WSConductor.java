@@ -1,8 +1,6 @@
 package ws;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import gateway.sms.JaxSms;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -10,12 +8,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import modelo.dao.ConductorDAO;
 import modelo.pojos.Conductor;
 import modelo.pojos.Respuesta;
+import modelo.pojos.RespuestaEmailSMS;
 
 /**
  * REST Web Service
@@ -72,6 +72,12 @@ public class WSConductor {
             r.setMensaje("Ingrese un telefono valido.");
             return r;
         }
+        if (!ConductorDAO.buscarPorTelefono(telefono)) {
+            r.setError(true);
+            r.setErrorcode(1);
+            r.setMensaje("Ya existe un usuario con este telefono.");
+            return r;
+        }
         c.setTelefono(telefono);
         if (Objects.equals(numLicencia, null)) {
             r.setError(true);
@@ -93,18 +99,76 @@ public class WSConductor {
             return r;
         }
         c.setContrasenia(contrasenia);
+        String token = generarNumeros();
+        c.setToken(token);
         int fa = ConductorDAO.registrarConductor(c);
-        if (fa != 0) {
+        if (fa != 1) {
             r.setError(true);
             r.setErrorcode(fa);
             r.setMensaje("No se pudo registrar al conductor.");
         } else {
+            RespuestaEmailSMS sms = new RespuestaEmailSMS();
+            JaxSms jax = new JaxSms();
+            String respuesta = jax.enviar(telefono, "Codigo: " + token);
             r.setError(false);
             r.setErrorcode(0);
             r.setMensaje("Usuario registrado exitosamente.");
         }
         
         return r;
+    }
+    
+    public String generarNumeros() {
+        Integer numero = (int) (Math.random() * 9000 + 1000);
+        return numero.toString();
+    }
+    
+    @POST
+    @Path("validarsms")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta validarToken(
+    @FormParam ("telefono") String telefono,
+            @FormParam ("token") String token) {
+        Respuesta r = new Respuesta();
+        Conductor c = new Conductor();
+        c.setToken(token);
+        c.setTelefono(telefono);
+        if (token.length() < 4 && token.length() > 4) {
+            r.setError(true);
+            r.setErrorcode(7);
+            r.setMensaje("El token debe contener solo 4 caracteres.");
+            return r;
+        }
+        if (!ConductorDAO.verificarToken(c)) {
+            r.setError(true);
+            r.setErrorcode(7);
+            r.setMensaje("Token incorrecto.");
+            return r;
+        }
+        int fa = ConductorDAO.validarConductor(c);
+        if (fa != 1) {
+            r.setError(true);
+            r.setErrorcode(1);
+            r.setMensaje("No se pudo validar al conductor");
+        } else {
+            r.setError(false);
+            r.setErrorcode(0);
+            r.setMensaje("Conductor validado.");
+        }
+        return r;
+    }
+    
+    @POST
+    @Path("login")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Conductor login(
+    @FormParam ("telefono") String telefono,
+            @FormParam ("contrasenia") String contrasenia) {
+        Conductor aux = new Conductor();
+        aux.setTelefono(telefono);
+        aux.setContrasenia(contrasenia);
+        Conductor c = ConductorDAO.login(aux);
+        return c;
     }
     
     /**

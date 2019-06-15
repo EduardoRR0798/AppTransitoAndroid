@@ -11,7 +11,16 @@ public class Conductor {
     private String numLicencia;
     private String telefono;
     private String contrasenia;
+    private String token;
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
     /**
      * @return the idConductor
      */

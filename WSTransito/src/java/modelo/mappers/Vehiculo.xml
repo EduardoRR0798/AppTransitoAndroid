@@ -16,8 +16,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{propietario, jdbcType=CHAR, mode=IN},
         #{id, jdbcType=INTEGER, mode=OUT})}
     </update>
-    <select id="findByPlaca" parameterType="string" returnType="modelo.pojos.Vehiculo">
-        SELECT * FROM transito.dbo.vehiculo where placa = #{placa};
+    <select id="findByPlaca" resultType="modelo.pojos.Vehiculo" parameterType="string">
+        SELECT * FROM transito.dbo.vehiculo WHERE placa = #{placa};
     </select>
     <delete id="eliminarRelacion" parameterType="integer">
         DELETE FROM transito.dbo.vehiculo_conductor WHERE idVehiculoConductor = #{idVehiculoConductor};
@@ -25,7 +25,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="agregarALista" parameterType="map">
         INSERT INTO transito.dbo.vehiculo_conductor(idConductor, idVehiculo, propietario) VALUES(#{idConductor}, #{idVehiculo}, #{propietario});
     </insert>
-    <select>
-        SELECT * FROM transito.dbo.vehiculo_conductor WHERE idConductor = #{idConductor};
+    <select id="findByIdConductor" parameterType="integer" resultType="integer">
+        SELECT idVehiculo FROM transito.dbo.vehiculo_conductor WHERE idConductor = #{idConductor};
+    </select>
+    <select id="findByIdVehiculo" parameterType="integer" resultType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE idVehiculo = #{idVehiculo};
     </select>
 </mapper>

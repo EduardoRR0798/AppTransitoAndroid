@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author Eduar
  */
-@javax.ws.rs.ApplicationPath("webresources")
+@javax.ws.rs.ApplicationPath("ws")
 public class ApplicationConfig extends javax.ws.rs.core.Application {
 
     @Override

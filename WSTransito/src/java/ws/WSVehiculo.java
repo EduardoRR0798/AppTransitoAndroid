@@ -1,5 +1,6 @@
 package ws;
 
+import java.util.List;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -11,11 +12,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelo.dao.VehiculoDAO;
 import modelo.pojos.Respuesta;
 import modelo.pojos.Vehiculo;
-import org.apache.ibatis.annotations.Delete;
 
 /**
  * REST Web Service
@@ -89,7 +90,7 @@ public class WSVehiculo {
         v.setIdConductor(idConductor);
         v.setPropietario(propietario);
         int fa = VehiculoDAO.registrar(v);
-        if (fa != 0) {
+        if (fa != 1) {
             r.setError(true);
             r.setErrorcode(fa);
             r.setMensaje("No se pudo registrar el vehiculo.");
@@ -122,15 +123,40 @@ public class WSVehiculo {
     }
     
     @POST
-    @Path("agregar")
+    @Path("agregarexistente")
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta agregarVehiculo(
     @FormParam ("idConductor") Integer idConductor,
     @FormParam ("idVehiculo") Integer idVehiculo,
-    @FormParam ("propietario") String propirtario) {
+    @FormParam ("propietario") String propietario) {
         Respuesta r = new Respuesta();
-        
+        int fa = VehiculoDAO.agregarALista(idConductor, idVehiculo, propietario);
+        if (fa > 0) {
+            r.setError(true);
+            r.setErrorcode(0);
+            r.setMensaje("Vehiculo registrado exitosamente.");
+        } else {
+            r.setError(true);
+            r.setErrorcode(1);
+            r.setMensaje("No se pudo registrar el vehiculo.");
+        }
         return r;
+    }
+    
+    @POST
+    @Path("buscarporidconductor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Vehiculo> buscarPorIdConductor(
+    @FormParam ("idConductor") Integer idConductor) {
+        return VehiculoDAO.findByIdConductor(idConductor);
+    }
+    
+    @POST
+    @Path("buscarporplaca")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Vehiculo buscarPorPlaca (
+    @FormParam ("placa") String placa) {
+        return VehiculoDAO.findByPlaca(placa);
     }
     
     /**
