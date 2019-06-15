@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ValidacionActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Validar Conductor"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edtCodigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Ingrese su codigo de validacion"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnValidar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="confirmar"
+        android:text="Validar" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Por favor, no salga de esta ventana"
+        android:textAlignment="center" />
+
+</android.support.v7.widget.LinearLayoutCompat>
