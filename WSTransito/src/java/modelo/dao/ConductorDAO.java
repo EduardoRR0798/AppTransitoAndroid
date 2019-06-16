@@ -106,4 +106,51 @@ public class ConductorDAO {
         }
         return fa;
     }
+    
+    public static boolean findByLicenciaId(Conductor c) {
+        SqlSession conn = null;
+        List<Conductor> cs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            cs = conn.selectList("Conductor.findByNumLicenciaId", c);
+            if (cs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static boolean findByLicencia(String numLicencia) {
+        SqlSession conn = null;
+        List<Conductor> cs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            cs = conn.selectList("Conductor.findByNumLicencia", numLicencia);
+            if (cs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static int modificar(Conductor c) {
+        SqlSession conn = null;
+        int fa = 0;
+        try {
+            conn = MyBatisUtils.getSession();
+            fa = conn.update("Conductor.modificar", c);
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fa;
+    }
 }

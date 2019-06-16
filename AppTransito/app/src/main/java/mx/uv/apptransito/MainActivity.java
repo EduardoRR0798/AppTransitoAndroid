@@ -1,7 +1,9 @@
 package mx.uv.apptransito;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,8 +100,16 @@ public class MainActivity extends AppCompatActivity {
             Gson gson = new Gson();
             Conductor c = gson.fromJson(json, Conductor.class);
             try {
-                Intent i = new Intent(this, VehiculoActivity.class);
-                i.putExtra("conductor", json);
+                Intent i = new Intent(this, MenuActivity.class);
+                SharedPreferences sp = getSharedPreferences("TRANSITO", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                if (sp != null) {
+                    editor.remove("conductor");
+                    editor.putString("conductor", json);
+                } else {
+                    editor.putString("conductor", json);
+                }
+                editor.commit();
                 startActivity(i);
             } catch (Exception e) {
                 e.printStackTrace();

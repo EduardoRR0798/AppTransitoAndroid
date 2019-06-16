@@ -79,10 +79,10 @@ public class WSConductor {
             return r;
         }
         c.setTelefono(telefono);
-        if (Objects.equals(numLicencia, null)) {
+        if (!ConductorDAO.findByLicencia(numLicencia)) {
             r.setError(true);
             r.setErrorcode(1);
-            r.setMensaje("El numero de licencia no puede ser nulo.");
+            r.setMensaje("El numero de licencia ya se encuentra registrado.");
             return r;
         }
         c.setNumLicencia(numLicencia);
@@ -169,6 +169,38 @@ public class WSConductor {
         aux.setContrasenia(contrasenia);
         Conductor c = ConductorDAO.login(aux);
         return c;
+    }
+    
+    @POST
+    @Path("modificar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta modificar(
+    @FormParam ("contrasenia") String contrasenia,
+            @FormParam ("numLicencia") String numLicencia,
+            @FormParam ("idConductor") Integer idConductor) {
+        Respuesta r = new Respuesta();
+        Conductor c = new Conductor();
+        c.setContrasenia(contrasenia);
+        c.setNumLicencia(numLicencia);
+        c.setIdConductor(idConductor);
+        if (!ConductorDAO.findByLicenciaId(c)) {
+            r.setError(true);
+            r.setErrorcode(1);
+            r.setMensaje("El numero de licencia ya se encuentra registrado.");
+            return r;
+        }
+        int fa = 0;
+        fa = ConductorDAO.modificar(c);
+        if (fa > 0) {
+            r.setError(false);
+            r.setErrorcode(0);
+            r.setMensaje("Se han actualizado los datos exitosamente.");
+        } else {
+            r.setError(true);
+            r.setErrorcode(1);
+            r.setMensaje("No se pudieron actualizar los datos.");
+        }
+        return r;
     }
     
     /**

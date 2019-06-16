@@ -19,8 +19,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findByPlaca" resultType="modelo.pojos.Vehiculo" parameterType="string">
         SELECT * FROM transito.dbo.vehiculo WHERE placa = #{placa};
     </select>
-    <delete id="eliminarRelacion" parameterType="integer">
-        DELETE FROM transito.dbo.vehiculo_conductor WHERE idVehiculoConductor = #{idVehiculoConductor};
+    <select id="findByPlacaId" resultType="modelo.pojos.Vehiculo" parameterType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE placa = #{placa} AND idVehiculo != #{idVehiculo};
+    </select>
+    <delete id="eliminarRelacion" parameterType="modelo.pojos.Vehiculo">
+        DELETE FROM transito.dbo.vehiculo_conductor WHERE idVehiculo = #{idVehiculo} AND idConductor = #{idConductor};
     </delete>
     <insert id="agregarALista" parameterType="map">
         INSERT INTO transito.dbo.vehiculo_conductor(idConductor, idVehiculo, propietario) VALUES(#{idConductor}, #{idVehiculo}, #{propietario});
@@ -31,4 +34,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findByIdVehiculo" parameterType="integer" resultType="modelo.pojos.Vehiculo">
         SELECT * FROM transito.dbo.vehiculo WHERE idVehiculo = #{idVehiculo};
     </select>
+    <select id="findByNumPoliza" resultType="modelo.pojos.Vehiculo" parameterType="string">
+        SELECT * FROM transito.dbo.vehiculo WHERE numPoliza = #{numPoliza};
+    </select>
+    <select id="findByNumPolizaId" resultType="modelo.pojos.Vehiculo" parameterType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE numPoliza = #{numPoliza} AND idVehiculo != #{idVehiculo};
+    </select>
+    <update id="modificar" parameterType="modelo.pojos.Vehiculo">
+        UPDATE transito.dbo.vehiculo SET marca = #{marca}, modelo = #{modelo}, anio = #{anio}, color = #{color}, nombreAseguradora = #{nombreAseguradora}, numPoliza = #{numPoliza}, placa = #{placa} WHERE idVehiculo = #{idVehiculo};
+    </update>
 </mapper>

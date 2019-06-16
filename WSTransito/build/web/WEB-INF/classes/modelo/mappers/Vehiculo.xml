@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Vehiculo">
+    <update id="registrar" parameterType="modelo.pojos.Vehiculo" statementType="CALLABLE">
+        {CALL transito.dbo.pc_registrar_vehiculo(
+        #{marca, jdbcType=VARCHAR, mode=IN},
+        #{modelo, jdbcType=VARCHAR, mode=IN},
+        #{anio, jdbcType=VARCHAR, mode=IN},
+        #{color, jdbcType=VARCHAR, mode=IN},
+        #{nombreAseguradora, jdbcType=VARCHAR, mode=IN},
+        #{numPoliza, jdbcType=VARCHAR, mode=IN},
+        #{placa, jdbcType=VARCHAR, mode=IN},
+        #{idConductor, jdbcType=INTEGER, mode=IN},
+        #{propietario, jdbcType=CHAR, mode=IN},
+        #{id, jdbcType=INTEGER, mode=OUT})}
+    </update>
+    <select id="findByPlaca" resultType="modelo.pojos.Vehiculo" parameterType="string">
+        SELECT * FROM transito.dbo.vehiculo WHERE placa = #{placa};
+    </select>
+    <select id="findByPlacaId" resultType="modelo.pojos.Vehiculo" parameterType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE placa = #{placa} AND idVehiculo != #{idVehiculo};
+    </select>
+    <delete id="eliminarRelacion" parameterType="modelo.pojos.Vehiculo">
+        DELETE FROM transito.dbo.vehiculo_conductor WHERE idVehiculo = #{idVehiculo} AND idConductor = #{idConductor};
+    </delete>
+    <insert id="agregarALista" parameterType="map">
+        INSERT INTO transito.dbo.vehiculo_conductor(idConductor, idVehiculo, propietario) VALUES(#{idConductor}, #{idVehiculo}, #{propietario});
+    </insert>
+    <select id="findByIdConductor" parameterType="integer" resultType="integer">
+        SELECT idVehiculo FROM transito.dbo.vehiculo_conductor WHERE idConductor = #{idConductor};
+    </select>
+    <select id="findByIdVehiculo" parameterType="integer" resultType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE idVehiculo = #{idVehiculo};
+    </select>
+    <select id="findByNumPoliza" resultType="modelo.pojos.Vehiculo" parameterType="string">
+        SELECT * FROM transito.dbo.vehiculo WHERE numPoliza = #{numPoliza};
+    </select>
+    <select id="findByNumPolizaId" resultType="modelo.pojos.Vehiculo" parameterType="modelo.pojos.Vehiculo">
+        SELECT * FROM transito.dbo.vehiculo WHERE numPoliza = #{numPoliza} AND idVehiculo != #{idVehiculo};
+    </select>
+    <update id="modificar" parameterType="modelo.pojos.Vehiculo">
+        UPDATE transito.dbo.vehiculo SET marca = #{marca}, modelo = #{modelo}, anio = #{anio}, color = #{color}, nombreAseguradora = #{nombreAseguradora}, numPoliza = #{numPoliza}, placa = #{placa} WHERE idVehiculo = #{idVehiculo};
+    </update>
+</mapper>

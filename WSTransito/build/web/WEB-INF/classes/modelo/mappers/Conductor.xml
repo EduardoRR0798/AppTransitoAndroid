@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Conductor">
+    <insert id="registrarse" parameterType="modelo.pojos.Conductor">
+        INSERT INTO transito.dbo.conductor(nombre, fechaNacimiento, numLicencia, telefono, contrasenia, token) 
+        VALUES (#{nombre}, #{fechaNacimiento}, #{numLicencia}, #{telefono}, #{contrasenia}, #{token});
+    </insert>
+    <select id="findById" parameterType="integer" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE idConductor = #{idConductor};
+    </select>
+    <select id="findByTelefono" parameterType="string" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE telefono = #{telefono};
+    </select>
+    <select id="login" parameterType="modelo.pojos.Conductor" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE telefono = #{telefono} AND contrasenia = #{contrasenia} AND token = 0;
+    </select>
+    <select id="verificarToken" parameterType="modelo.pojos.Conductor" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE telefono = #{telefono} AND token = #{token};
+    </select>
+    <update id="validarConductor" parameterType="modelo.pojos.Conductor">
+        UPDATE transito.dbo.conductor SET token = 0 WHERE telefono = #{telefono};
+    </update>
+    <select id="findByNumLicenciaId" parameterType="modelo.pojos.Conductor" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE numLicencia = #{numLicencia} AND idConductor != #{idConductor};
+    </select>
+    <select id="findByNumLicencia" parameterType="string" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE numLicencia = #{numLicencia};
+    </select>
+    <update id="modificar" parameterType="modelo.pojos.Conductor">
+        UPDATE transito.dbo.conductor SET numLicencia = #{numLicencia}, contrasenia = #{contrasenia} WHERE idConductor = #{idConductor};
+    </update>
+</mapper>
+

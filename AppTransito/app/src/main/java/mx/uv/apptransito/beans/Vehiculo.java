@@ -100,4 +100,9 @@ public class Vehiculo {
     public void setPlaca(String placa) {
         this.placa = placa;
     }
+
+    @Override
+    public String toString() {
+        return "Marca: "+ marca + "\nModelo: " + modelo + "\nPlaca: "+ placa;
+    }
 }

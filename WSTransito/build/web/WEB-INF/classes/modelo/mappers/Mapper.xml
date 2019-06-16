@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Marca">
+    <select id="getMarcas" resultType="beans.Marca">
+        SELECT idmarca, nombre FROM puntoventa.dbo.marca;
+    </select>  
+    <select id="buscarPorNombre" resultType="beans.Marca"
+    parameterType="string">
+        SELECT idmarca,nombre FROM puntoventa.dbo.marca
+        WHERE nombre LIKE '%'+#{nombre}+'%';
+    </select>
+    <insert id="registrar" parameterType="string">
+        INSERT INTO puntoventa.dbo.marca (nombre)
+        VALUES(#{nombre});
+    </insert>
+    <delete id="eliminar" parameterType="integer">
+        DELETE FROM puntoventa.dbo.marca WHERE idmarca = #{idmarca};
+    </delete>
+    <update id="actualizar" parameterType="map">
+        UPDATE puntoventa.dbo.marca SET nombre = #{nombre} WHERE idmarca = #{idmarca};
+    </update>
+</mapper>
+

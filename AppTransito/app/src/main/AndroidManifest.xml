@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegistrovehiculoActivity"></activity>
+        <activity android:name=".ModificarVehiculoActivity"></activity>
+        <activity android:name=".DatosActivity" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".RegistrovehiculoActivity" />
         <activity android:name=".VehiculoActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".ValidacionActivity" />

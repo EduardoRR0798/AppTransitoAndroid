@@ -187,19 +187,21 @@ public class HttpUtils {
         return res;
     }
 
-    public static String eliminarNota(Integer idMensaje) {
+
+
+    public static String eliminarVehiculo(Integer idVehiculo, Integer idConductor) {
         HttpURLConnection c = null;
         String res = "";
         try {
-            URL u = new URL(URL_WSV+"eliminar");
+            URL u = new URL(URL_WSV + "eliminarrelacion");
             c = (HttpURLConnection) u.openConnection();
-            c.setRequestMethod("POST");
+            c.setRequestMethod("DELETE");
             c.setDoOutput(true);
             c.setConnectTimeout(CONNECT_TIMEOUT);
             c.setReadTimeout(READ_TIMEOUT);
 
             DataOutputStream wr = new DataOutputStream(c.getOutputStream());
-            String urlParameters = String.format("idMensaje=%s", idMensaje);
+            String urlParameters = String.format("idConductor=%s&idVehiculo=%s", idConductor, idVehiculo);
             wr.writeBytes(urlParameters);
             wr.flush();
             wr.close();
@@ -229,11 +231,11 @@ public class HttpUtils {
         return res;
     }
 
-    public static String editarNota(Integer idMensaje, String mensaje, String asunto) {
+    public static String modificarVehiculo(String marca, String modelo, String anio, String color, String nombreAseguradora, String numPoliza, String placa, Integer idVehiculo) {
         HttpURLConnection c = null;
         String res = "";
         try {
-            URL u = new URL(URL_WSV+"editarnota");
+            URL u = new URL(URL_WSV + "modificar");
             c = (HttpURLConnection) u.openConnection();
             c.setRequestMethod("POST");
             c.setDoOutput(true);
@@ -241,7 +243,50 @@ public class HttpUtils {
             c.setReadTimeout(READ_TIMEOUT);
 
             DataOutputStream wr = new DataOutputStream(c.getOutputStream());
-            String urlParameters = String.format("idMensaje=%s&mensaje=%s&asunto=%s", idMensaje, mensaje, asunto);
+            String urlParameters = String.format("marca=%s&modelo=%s&anio=%s&color=%s&nombreAseguradora=%s&numPoliza=%s&placa=%s&idVehiculo=%s"
+                    ,marca, modelo, anio, color, nombreAseguradora, numPoliza, placa, idVehiculo);
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
+
+            int status = c.getResponseCode();
+            if (status == 200 || status == 201) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine())!= null) {
+                    sb.append(line + "\n");
+                }
+                res = sb.toString();
+                br.close();
+                return sb.toString();
+            }
+
+        } catch (MalformedURLException ex) {
+
+        } catch (IOException e) {
+
+        } finally {
+            if (c != null) {
+                c.disconnect();
+            }
+        }
+        return res;
+    }
+
+    public static String modificarConductor(Integer idConductor, String contrasenia, String numLicencia) {
+        HttpURLConnection c = null;
+        String res = "";
+        try {
+            URL u = new URL(URL_WS + "modificar");
+            c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("POST");
+            c.setDoOutput(true);
+            c.setConnectTimeout(CONNECT_TIMEOUT);
+            c.setReadTimeout(READ_TIMEOUT);
+
+            DataOutputStream wr = new DataOutputStream(c.getOutputStream());
+            String urlParameters = String.format("idConductor=%s&contrasenia=%s&numLicencia=%s", idConductor, contrasenia, numLicencia);
             wr.writeBytes(urlParameters);
             wr.flush();
             wr.close();
