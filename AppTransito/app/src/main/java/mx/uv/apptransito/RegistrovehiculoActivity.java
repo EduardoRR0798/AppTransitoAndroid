@@ -1,7 +1,9 @@
 package mx.uv.apptransito;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,12 +50,12 @@ public class RegistrovehiculoActivity extends AppCompatActivity {
         edtColor = (EditText) findViewById(R.id.edtColor);
         rbDuenio = (RadioButton) findViewById(R.id.rbDuenio);
         params = new String[8];
-        leerParametros();
+        leerPreferencias();
     }
 
-    private void leerParametros() {
-        Intent intent = getIntent();
-        conductor = intent.getStringExtra("conductor");
+    private void leerPreferencias() {
+        SharedPreferences sp = getSharedPreferences("TRANSITO", Context.MODE_PRIVATE);
+        conductor = sp.getString("conductor", "");
         Gson gson = new Gson();
         c = gson.fromJson(conductor, Conductor.class);
     }
@@ -148,9 +150,8 @@ public class RegistrovehiculoActivity extends AppCompatActivity {
             if (r.isError()) {
                 Toast.makeText(this, r.getResult(), Toast.LENGTH_SHORT).show();
             } else {
-                Intent i = new Intent(this, VehiculoActivity.class);
-                i.putExtra("conductor", conductor);
-                startActivity(i);
+                Toast.makeText(this, "Vehiculo registrado exitosamente", Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else {
             Toast.makeText(this, "No se pudo registrar el vehiculo...", Toast.LENGTH_SHORT).show();

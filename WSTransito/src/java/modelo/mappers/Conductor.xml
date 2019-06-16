@@ -22,5 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="validarConductor" parameterType="modelo.pojos.Conductor">
         UPDATE transito.dbo.conductor SET token = 0 WHERE telefono = #{telefono};
     </update>
+    <select id="findByNumLicenciaId" parameterType="modelo.pojos.Conductor" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE numLicencia = #{numLicencia} AND idConductor != #{idConductor};
+    </select>
+    <select id="findByNumLicencia" parameterType="string" resultType="modelo.pojos.Conductor">
+        SELECT * FROM transito.dbo.conductor WHERE numLicencia = #{numLicencia};
+    </select>
+    <update id="modificar" parameterType="modelo.pojos.Conductor">
+        UPDATE transito.dbo.conductor SET numLicencia = #{numLicencia}, contrasenia = #{contrasenia} WHERE idConductor = #{idConductor};
+    </update>
 </mapper>
 

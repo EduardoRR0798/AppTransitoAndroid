@@ -12,7 +12,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelo.dao.VehiculoDAO;
 import modelo.pojos.Respuesta;
@@ -50,43 +49,29 @@ public class WSVehiculo {
             @FormParam ("idConductor") Integer idConductor) {
         Respuesta r = new Respuesta();
         Vehiculo v = new Vehiculo();
-        if (Objects.equals(marca, null)) {
-            r.setError(true);
-            r.setErrorcode(1);
-            r.setMensaje("La marca no puede estar vacia.");
-        }
         v.setMarca(marca);
-        if (Objects.equals(modelo, null)) {
-            r.setError(true);
-            r.setErrorcode(1);
-            r.setMensaje("El modelo no puede estar vacio.");
-        }
         v.setModelo(modelo);
-        if (Objects.equals(anio, null)) {
-            r.setError(true);
-            r.setErrorcode(1);
-            r.setMensaje("El año no puede estar vacio.");
-        }
         v.setAnio(anio);
-        if (Objects.equals(color, null)) {
-            r.setError(true);
-            r.setErrorcode(1);
-            r.setMensaje("El color no puede estar vacio.");
-        }
         v.setColor(color);
-        if (Objects.equals(placa, null)) {
+        if (!VehiculoDAO.findByPlacaB(placa)) {
             r.setError(true);
             r.setErrorcode(1);
-            r.setMensaje("La placa no puede estar vacia.");
+            r.setMensaje("La placa ya esta registrada");
+            return r;
         }
         v.setPlaca(placa);
+        v.setNumPoliza(numPoliza);
+        if (!Objects.equals(numPoliza, null)) {
+            if (!VehiculoDAO.findByPolizaId(v)) {
+                r.setError(true);
+                r.setErrorcode(1);
+                r.setMensaje("El numero de poliza ya se encuentra registrado");
+                return r;
+            }
+        }
+        
         v.setNombreAseguradora(nombreAseguradora);
         v.setNumPoliza(numPoliza);
-        if (Objects.equals(idConductor, null)) {
-            r.setError(true);
-            r.setErrorcode(1);
-            r.setMensaje("El id del conductor no puede estar vacio.");
-        }
         v.setIdConductor(idConductor);
         v.setPropietario(propietario);
         int fa = VehiculoDAO.registrar(v);
@@ -106,17 +91,21 @@ public class WSVehiculo {
     @Path("eliminarrelacion")
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta eliminarRelacion(
-    @FormParam ("idVehiculoConductor") Integer idVehiculoConductor) {
+    @FormParam ("idVehiculo") Integer idVehiculo,
+            @FormParam ("idConductor") Integer idConductor) {
         Respuesta r = new Respuesta();
+        Vehiculo ve = new Vehiculo();
+        ve.setIdConductor(idConductor);
+        ve.setIdVehiculo(idVehiculo);
         int fa = 0;
-        fa = VehiculoDAO.eliminarRelacion(idVehiculoConductor);
-        if (fa != 0) {
-            r.setError(true);
-            r.setErrorcode(fa);
-            r.setMensaje("El vehiculo se ha eliminado de la lista.");
-        } else {
+        fa = VehiculoDAO.eliminarRelacion(ve);
+        if (fa > 0) {
             r.setError(false);
             r.setErrorcode(0);
+            r.setMensaje("El vehiculo se ha eliminado de la lista.");
+        } else {
+            r.setError(true);
+            r.setErrorcode(1);
             r.setMensaje("No se pudo eliminar.");
         }
         return r;
@@ -127,10 +116,9 @@ public class WSVehiculo {
     @Produces(MediaType.APPLICATION_JSON)
     public Respuesta agregarVehiculo(
     @FormParam ("idConductor") Integer idConductor,
-    @FormParam ("idVehiculo") Integer idVehiculo,
-    @FormParam ("propietario") String propietario) {
+    @FormParam ("idVehiculo") Integer idVehiculo) {
         Respuesta r = new Respuesta();
-        int fa = VehiculoDAO.agregarALista(idConductor, idVehiculo, propietario);
+        int fa = VehiculoDAO.agregarALista(idConductor, idVehiculo);
         if (fa > 0) {
             r.setError(true);
             r.setErrorcode(0);
@@ -159,6 +147,55 @@ public class WSVehiculo {
         return VehiculoDAO.findByPlaca(placa);
     }
     
+    @POST
+    @Path("modificar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta modificar(
+    @FormParam ("idVehiculo") Integer idVehiculo,
+            @FormParam ("marca") String marca,
+            @FormParam ("modelo") String modelo,
+            @FormParam ("anio") String anio,
+            @FormParam ("color") String color,
+            @FormParam ("nombreAseguradora") String nombreAseguradora,
+            @FormParam ("numPoliza") String numPoliza,
+            @FormParam ("placa") String placa) {
+        Respuesta r = new Respuesta();
+        Vehiculo ve =  new Vehiculo();
+        ve.setAnio(anio);
+        ve.setColor(color);
+        ve.setIdVehiculo(idVehiculo);
+        ve.setModelo(modelo);
+        ve.setNombreAseguradora(nombreAseguradora);
+        ve.setPlaca(placa);
+        ve.setMarca(marca);
+        ve.setNumPoliza(numPoliza);
+        if (!Objects.equals(numPoliza, null)) {
+            if (!VehiculoDAO.findByPolizaId(ve)) {
+                r.setError(true);
+                r.setErrorcode(1);
+                r.setMensaje("El numero de poliza ya se encuentra registrado.");
+                return r;
+            }
+        }
+        if (!VehiculoDAO.findByPlacaId(ve)) {
+            r.setError(true);
+            r.setErrorcode(2);
+            r.setMensaje("La placa ya se encuentra registrada.");
+            return r;
+        }
+        int fa = 0;
+        fa = VehiculoDAO.modificar(ve);
+        if (fa > 0) {
+            r.setError(false);
+            r.setErrorcode(0);
+            r.setMensaje("Datos actualizados exitosamente.");
+        } else {
+            r.setError(true);
+            r.setErrorcode(3);
+            r.setMensaje("No se pudo actualizar.");
+        }
+        return r;
+    }
     /**
      * Retrieves representation of an instance of ws.WSVehiculo
      * @return an instance of java.lang.String

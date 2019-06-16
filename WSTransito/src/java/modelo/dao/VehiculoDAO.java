@@ -56,12 +56,96 @@ public class VehiculoDAO {
         return vehiculo;
     }
     
-    public static int eliminarRelacion(Integer idVehiculoConductor) {
+    public static boolean findByPlacaB(String placa) {
+        SqlSession conn = null;
+        List<Vehiculo> vs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            vs = conn.selectList("Vehiculo.findByPlaca", placa);
+            if (vs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return false;
+    }
+    
+    public static boolean findByPlacaId(Vehiculo ve) {
+        SqlSession conn = null;
+        List<Vehiculo> vs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            vs = conn.selectList("Vehiculo.findByPlacaId", ve);
+            if (vs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return false;
+    }
+    
+    public static boolean findByPoliza(String poliza) {
+        SqlSession conn = null;
+        List<Vehiculo> vs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            vs = conn.selectList("Vehiculo.findByNumPoliza", poliza);
+            if (vs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return false;
+    }
+    
+    public static boolean findByPolizaId(Vehiculo ve) {
+        SqlSession conn = null;
+        List<Vehiculo> vs = null;
+        try {
+            conn = MyBatisUtils.getSession();
+            vs = conn.selectList("Vehiculo.findByNumPolizaId", ve);
+            if (vs.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return false;
+    }
+    
+    public static int eliminarRelacion(Vehiculo ve) {
         SqlSession conn = null;
         int eliminacion = 0;
         try {
             conn = MyBatisUtils.getSession();
-            eliminacion = conn.delete("Vehiculo.eliminarRelacion", idVehiculoConductor);
+            eliminacion = conn.delete("Vehiculo.eliminarRelacion", ve);
             conn.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,14 +157,14 @@ public class VehiculoDAO {
         return eliminacion;
     }
     
-    public static int agregarALista(Integer idConductor, Integer idVehiculo, String propietario) {
+    public static int agregarALista(Integer idConductor, Integer idVehiculo) {
         SqlSession conn = null;
         int fa = 0;
         try {
             HashMap<String, Object> param = new HashMap<String, Object>();
             param.put("idConductor", idConductor);
             param.put("idVehiculo", idVehiculo);
-            param.put("propietario", propietario);
+            param.put("propietario", "N");
             conn = MyBatisUtils.getSession();
             fa = conn.insert("Vehiculo.agregarALista", param);
             conn.commit();
@@ -124,5 +208,22 @@ public class VehiculoDAO {
             e.printStackTrace();
         }
         return fa;
+    }
+    
+    public static int modificar(Vehiculo ve) {
+        SqlSession conn = null;
+        int eliminacion = 0;
+        try {
+            conn = MyBatisUtils.getSession();
+            eliminacion = conn.delete("Vehiculo.modificar", ve);
+            conn.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return eliminacion;
     }
 }
