@@ -29,6 +29,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.WSConductor.class);
+        resources.add(ws.WSSiniestro.class);
         resources.add(ws.WSVehiculo.class);
     }
     
