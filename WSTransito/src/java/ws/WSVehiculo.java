@@ -33,6 +33,16 @@ public class WSVehiculo {
      */
     public WSVehiculo() {
     }
+    
+    @POST
+    @Path("deconductor")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Respuesta deConductor(
+    @FormParam ("idConductor") Integer idConductor) {
+        Respuesta respuesta = new Respuesta();
+        respuesta.setVehiculos(VehiculoDAO.findByIdConductor(idConductor));
+        return respuesta;
+    }
 
     @PUT
     @Path("registrar")

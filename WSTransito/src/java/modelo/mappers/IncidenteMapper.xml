@@ -12,8 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="cerca" parameterType="map" resultMap="incidenteMap">
         SELECT *
         FROM transito.dbo.incidente
-        WHERE fecha = CAST(GETDATE() AS DATE)
-        AND hora BETWEEN DATEADD(HOUR, -2, CAST(GETDATE() AS TIME)) AND CAST(GETDATE() AS TIME)
+        WHERE CAST(fecha AS DATETIME) + CAST(hora AS DATETIME) BETWEEN DATEADD(HOUR, -2, GETDATE()) AND GETDATE()
         AND (SELECT transito.dbo.Distance(latitud,longitud,#{latitud}, #{longitud})) BETWEEN 0 AND 300;
     </select>
     

@@ -5,7 +5,6 @@
  */
 package modelo.pojos;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,6 +26,7 @@ public class Reporte {
     private String fechaHora;
     private Vehiculo vehiculo;
     private List<Foto> fotos;
+    private Dictamen dictamen;
 
     public Reporte() {
     }
@@ -133,6 +133,14 @@ public class Reporte {
 
     public void setFotos(List<Foto> fotos) {
         this.fotos = fotos;
+    }
+
+    public Dictamen getDictamen() {
+        return dictamen;
+    }
+
+    public void setDictamen(Dictamen dictamen) {
+        this.dictamen = dictamen;
     }
     
 }

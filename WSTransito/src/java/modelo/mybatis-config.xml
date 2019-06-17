@@ -25,5 +25,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="modelo/mappers/FotoMapper.xml"/>
         <mapper resource="modelo/mappers/ReporteMapper.xml"/>
         <mapper resource="modelo/mappers/IncidenteMapper.xml"/>
+        <mapper resource="modelo/mappers/DictamenMapper.xml"/>
     </mappers>
 </configuration>

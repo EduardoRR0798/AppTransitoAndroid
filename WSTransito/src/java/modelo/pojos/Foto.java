@@ -5,8 +5,6 @@
  */
 package modelo.pojos;
 
-import java.time.LocalDateTime;
-
 /**
  *
  * @author Razer

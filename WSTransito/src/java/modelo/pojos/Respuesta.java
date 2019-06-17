@@ -18,6 +18,7 @@ public class Respuesta {
     private Integer idGenerado;
     private List<Reporte> reportes;
     private List<Incidente> incidentes;
+    private List<Vehiculo> vehiculos;
 
     public Respuesta() {}
     /**
@@ -84,6 +85,14 @@ public class Respuesta {
 
     public void setIncidentes(List<Incidente> incidentes) {
         this.incidentes = incidentes;
+    }
+
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
     }
     
 }

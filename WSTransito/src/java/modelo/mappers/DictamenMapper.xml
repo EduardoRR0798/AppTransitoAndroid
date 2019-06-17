@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dictamen">
+    
+    <select id="findByIdReporte" parameterType="int" resultType="modelo.pojos.Dictamen">
+        SELECT d.*
+        FROM transito.dbo.dictamen d
+        INNER JOIN transito.dbo.incidente i ON i.idIncidente = d.idIncidente
+        INNER JOIN transito.dbo.reporte r ON r.idIncidente = i.idIncidente
+        WHERE r.idReporte = #{idReporte};
+    </select>
+    
+</mapper>
+
