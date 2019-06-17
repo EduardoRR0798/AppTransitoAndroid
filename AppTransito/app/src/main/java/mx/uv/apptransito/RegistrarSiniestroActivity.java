@@ -23,7 +23,7 @@ import mx.uv.apptransito.ws.Respuesta;
 
 public class RegistrarSiniestroActivity extends AppCompatActivity {
 
-    private static final String HOST = "http://10.0.2.2:8084";
+    private static final String HOST = "http://40.74.248.169:8080";
 
     private static final int REQUEST_CODE_INCIDENTE = 1;
     private static final int REQUEST_CODE_VEHICULO = 2;

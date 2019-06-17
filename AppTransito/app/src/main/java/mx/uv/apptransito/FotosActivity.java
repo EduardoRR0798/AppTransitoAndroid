@@ -32,7 +32,7 @@ import mx.uv.apptransito.ws.Respuesta;
 
 public class FotosActivity extends AppCompatActivity {
 
-    private static final String HOST = "http://10.0.2.2:8084";
+    private static final String HOST = "http://40.74.248.169:8080";
 
     public static final int REQUEST_CAPTURE = 1;
     public static final int PICK_IMAGE = 100;
