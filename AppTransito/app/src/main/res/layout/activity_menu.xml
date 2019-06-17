@@ -24,9 +24,13 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/btnSiniestros"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Siniestros"
+        android:text="Levantar reporte"
         android:textSize="18sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Consultar dictacmen de reporte" />
 </LinearLayout>

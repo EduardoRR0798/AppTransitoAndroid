@@ -40,7 +40,16 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void abrirSiniestros() {
+    public void registrarReporte(View v) {
+        Intent intent = new Intent(this, RegistrarSiniestroActivity.class);
+        intent.putExtra("idConductor", c.getIdConductor());
+        intent.putExtra("nombreConductor", c.getNombre());
+        startActivity(intent);
+    }
 
+    public void consultarDictamen(View v) {
+        Intent intent = new Intent(this, VerDictamenActivity.class);
+        intent.putExtra("idConductor", c.getIdConductor());
+        startActivity(intent);
     }
 }
