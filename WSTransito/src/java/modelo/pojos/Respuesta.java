@@ -5,6 +5,8 @@
  */
 package modelo.pojos;
 
+import java.util.List;
+
 /**
  *
  * @author Eduar
@@ -13,6 +15,9 @@ public class Respuesta {
     private boolean error;
     private Integer errorcode;
     private String mensaje;
+    private Integer idGenerado;
+    private List<Reporte> reportes;
+    private List<Incidente> incidentes;
 
     public Respuesta() {}
     /**
@@ -55,6 +60,30 @@ public class Respuesta {
      */
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public Integer getIdGenerado() {
+        return idGenerado;
+    }
+
+    public void setIdGenerado(Integer idGenerado) {
+        this.idGenerado = idGenerado;
+    }
+
+    public List<Reporte> getReportes() {
+        return reportes;
+    }
+
+    public void setReportes(List<Reporte> reportes) {
+        this.reportes = reportes;
+    }
+
+    public List<Incidente> getIncidentes() {
+        return incidentes;
+    }
+
+    public void setIncidentes(List<Incidente> incidentes) {
+        this.incidentes = incidentes;
     }
     
 }

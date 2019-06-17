@@ -6,8 +6,11 @@
 package modelo.dao;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import modelo.MyBatisUtils;
+import modelo.pojos.Foto;
 import org.apache.ibatis.session.SqlSession;
 
 /**
@@ -16,21 +19,41 @@ import org.apache.ibatis.session.SqlSession;
  */
 public class FotoDAO {
     
-    public static boolean guardar(Integer idReporte, byte[] fotoBytes) {
-        int filasAfectadas = 0;
-        
+    public static Integer guardar(Integer idReporte, byte[] fotoBytes) {
+        Integer idGenerado = null;
         try (SqlSession conn = MyBatisUtils.getSession()) {
             HashMap<String,Object> map = new HashMap<>();
             map.put("idReporte", idReporte);
             map.put("foto", fotoBytes);
             
-            filasAfectadas = conn.insert("foto.guardar", map);
+            conn.insert("foto.guardar", map);
             conn.commit();
+            
+            idGenerado = ((BigDecimal) map.get("idFoto")).intValue();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        return filasAfectadas > 0;
+        return idGenerado;
+    }
+    
+    public static List<Foto> fotosDeReporte(Integer idReporte) {
+        List<Foto> fotos = null;
+        try (SqlSession conn = MyBatisUtils.getSession()) {
+            fotos = conn.selectList("foto.findByIdReporte", idReporte);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fotos;
+    }
+    
+    public static List<Foto> fotosDeIncidente(Integer idIncidente) {
+        List<Foto> fotos = null;
+        try (SqlSession conn = MyBatisUtils.getSession()) {
+            fotos = conn.selectList("foto.findByIdIncidente", idIncidente);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fotos;
     }
     
 }

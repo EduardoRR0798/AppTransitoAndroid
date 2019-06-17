@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="incidente">
+    
+    <resultMap id="incidenteMap" type="modelo.pojos.Incidente">
+        <id column="idIncidente" property="idIncidente"/>
+        <collection column="idIncidente" property="fotos" select="foto.findByIdIncidente"/>
+    </resultMap>
+    
+    <select id="cerca" parameterType="map" resultMap="incidenteMap">
+        SELECT *
+        FROM transito.dbo.incidente
+        WHERE fecha = CAST(GETDATE() AS DATE)
+        AND hora BETWEEN DATEADD(HOUR, -2, CAST(GETDATE() AS TIME)) AND CAST(GETDATE() AS TIME)
+        AND (SELECT transito.dbo.Distance(latitud,longitud,#{latitud}, #{longitud})) BETWEEN 0 AND 300;
+    </select>
+    
+    <insert id="registrar" parameterType="map" useGeneratedKeys="true" keyProperty="idIncidente">
+        INSERT INTO transito.dbo.incidente
+        (longitud,latitud,fecha,estado,hora)
+        VALUES(#{longitud},#{latitud},GETDATE(),#{estado},GETDATE());
+    </insert>
+    
+    <select id="findById" parameterType="int" resultMap="incidenteMap">
+        SELECT *
+        FROM transito.dbo.incidente
+        WHERE idIncidente = #{idIncidente};
+    </select>
+    
+    <select id="existe" parameterType="int" resultType="boolean">
+        SELECT CASE WHEN count(1) = 0 THEN 0 ELSE 1 END AS existe
+        FROM transito.dbo.incidente
+        WHERE idIncidente = #{idIncidente};
+    </select>
+    
+</mapper>
+

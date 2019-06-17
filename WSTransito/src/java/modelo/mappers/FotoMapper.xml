@@ -4,10 +4,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="foto">
     
-    <select id="guardar" parameterType="map" resultType="boolean">
-        INSERT INTO transito.dbo.foto (idReporte, foto1, tiempocreacion)
+    <insert id="guardar" parameterType="map" useGeneratedKeys="true" keyProperty="idFoto">
+        INSERT INTO transito.dbo.foto (idReporte, fotoBytes, tiempocreacion)
         VALUES(#{idReporte}, #{foto}, CURRENT_TIMESTAMP);
+    </insert>
+    
+    <select id="findByIdReporte" parameterType="int" resultType="modelo.pojos.Foto">
+        SELECT *
+        FROM transito.dbo.foto
+        WHERE idReporte = #{idReporte};
     </select>
     
+    <select id="findByIdIncidente" parameterType="int" resultType="modelo.pojos.Foto">
+        SELECT f.*
+        FROM transito.dbo.foto f
+        INNER JOIN transito.dbo.reporte r ON r.idReporte = f.idReporte
+        INNER JOIN transito.dbo.incidente i ON i.idIncidente = r.idIncidente
+        WHERE i.idIncidente = #{idIncidente};
+    </select>    
 </mapper>
 

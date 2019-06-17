@@ -4,11 +4,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reporte">
     
+    <resultMap id="reporteMap" type="modelo.pojos.Reporte">
+        <id column="idReporte" property="idReporte"/>
+        <association column="idVehiculo" property="vehiculo" select="Vehiculo.findByIdVehiculo"/>
+        <collection column="idReporte" property="fotos" select="foto.findByIdReporte"/>
+    </resultMap>
+    
     <select id="existe" parameterType="int" resultType="boolean">
         SELECT CASE WHEN count(1) = 0 THEN 0 ELSE 1 END AS existe
         FROM transito.dbo.reporte
         WHERE idReporte = #{idReporte};
     </select>
+    
+    <select id="findByIdConductor" parameterType="int" resultMap="reporteMap">
+        SELECT *
+        FROM transito.dbo.reporte
+        WHERE idConductor = #{idConductor};
+    </select>
+    
+    <insert id="registrar" parameterType="map" useGeneratedKeys="true" keyProperty="idReporte">
+        INSERT INTO transito.dbo.reporte
+        (latitud,longitud,nombreConductor,nombreAseguradora,numPoliza,
+        marca,modelo,color,placa,fechahora,idConductor,idVehiculo,idIncidente)
+        VALUES (#{latitud},#{longitud},#{nombreConductor},#{nombreAseguradora},#{numPoliza},
+        #{marca},#{modelo},#{color},#{placa},GETDATE(),#{idConductor},#{idVehiculo},#{idIncidente});
+    </insert>
     
 </mapper>
 
